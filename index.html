@@ -91,7 +91,7 @@
       worker = new Worker('worker.js');
 
       resultElement.textContent = 'Loading...';
-      worker.onmessage = () => resultElement.textContent = e.data;
+      worker.onmessage = () => { resultElement.textContent = e.data };
       worker.postMessage(n);
     }
   </script>
