@@ -78,21 +78,20 @@
   <p id="result">...</p>
 
   <script>
+    const input = document.getElementById('numberInput');
+    const resultElement = document.getElementById('result');
     let worker;
     function calculateFibonacci() {
-      const value = document.getElementById('numberInput').value;
-      if (!/^\d+$/.test(value)) return;
-      const n = value;
-      const resultElement = document.getElementById('result');
+      const n = input.value;
+      if (!/^\d+$/.test(n)) return;
 
       if (worker) {
         worker.terminate();
       }
       worker = new Worker('worker.js');
 
-      worker.onmessage = function (e) {
-        resultElement.textContent = e.data;
-      };
+      resultElement.textContent = 'Loading...';
+      worker.onmessage = () => resultElement.textContent = e.data;
       worker.postMessage(n);
     }
   </script>
