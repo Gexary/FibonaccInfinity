@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcul de Fibonacci</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+      color: #343434;
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      margin: 32px;
+      font-size: 16px;
+    }
+
+    input,
+    button {
+      margin-top: 0;
+      padding: 0;
+      line-height: 2rem;
+      font-size: 1rem;
+      padding-inline: 0.5rem;
+    }
+
+    input {}
+
+    button {
+      padding-inline: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      font-weight: 800;
+    }
+
+    #result {
+      margin-top: 2rem;
+      display: block;
+      width: auto;
+      font-size: 1rem;
+      padding: 0.5rem;
+      line-height: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow-wrap: break-word;
+      font-family: monospace;
+    }
+
+    .container {
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 1rem;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Calculez le nombre de Fibonacci</h1>
+  <div class="container">
+    <label for="numberInput">Entrez un nombre, Fibonacci(n) :</label>
+    <input type="number" id="numberInput" min="0">
+    <button onclick="calculateFibonacci()">Calculer</button>
+  </div>
+  <p id="result">...</p>
+
+  <script>
+    let worker;
+    function calculateFibonacci() {
+      const value = document.getElementById('numberInput').value;
+      if (!/^\d+$/.test(value)) return;
+      const n = value;
+      const resultElement = document.getElementById('result');
+
+      if (worker) {
+        worker.terminate();
+      }
+      worker = new Worker('worker.js');
+
+      worker.onmessage = function (e) {
+        resultElement.textContent = e.data;
+      };
+      worker.postMessage(n);
+    }
+  </script>
+</body>
+
+</html>
